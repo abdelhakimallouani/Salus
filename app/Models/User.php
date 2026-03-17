@@ -48,5 +48,9 @@ class User extends Authenticatable
         ];
     }
 
+    public function symptoms(){
+        return $this->hasMany(Symptom::class);
+    }
+
     
 }
