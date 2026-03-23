@@ -28,14 +28,14 @@ class SymptomController extends Controller
     {
         //
     }
-
+ 
     /**
      * Store a newly created resource in storage.
      */
     public function store(SymptomRequest $request)
     {
         $symptom = Auth::user()->symptoms()->create($request->validated());
-        return
+    return response()->json(['success'=> true, 'symptom'=> $symptom, 'message'=>'Symptom added'],201);
     }
 
     /**
@@ -57,9 +57,22 @@ class SymptomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Symptom $symptom)
+    public function update(SymptomRequest $request, Symptom $symptom)
     {
-        //
+        if ($symptom->user() != Auth::user()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'You are not authorized to edit this symptom',
+        ], 403);
+        }
+
+        $symptom->update($request->validated());
+
+        return response()->json([
+            'success' => true,
+            'data' => $symptom,
+            'message' => 'Symptom updated successfully'
+        ]);
     }
 
     /**

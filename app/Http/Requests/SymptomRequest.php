@@ -12,7 +12,7 @@ class SymptomRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,7 +26,7 @@ class SymptomRequest extends FormRequest
             'name' => 'required|string|max:255',
             'severity' => 'required|in:mild,moderate,severe',
             'description' => 'nullable|string|max:1000',
-            'date_recorded' => 'required|date',
+            'date_added' => 'nullable|required|date|before_or_equal:today',
             'notes' => 'nullable|string|max:1000'
         ];
     }
