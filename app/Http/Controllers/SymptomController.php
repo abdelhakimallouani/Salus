@@ -18,7 +18,7 @@ class SymptomController extends Controller
     {
         $symptoms = Auth::user()->symptoms()->get();
 
-        // return
+        return response()->json(['success' => true, 'symptoms' => $symptoms, 'message' => 'Symptoms found']);
     }
 
     /**
@@ -43,7 +43,13 @@ class SymptomController extends Controller
      */
     public function show(Symptom $symptom)
     {
-        //
+        $symptom = Auth::user()->symptoms()->find($symptom->id);
+
+        if (!$symptom) {
+            return response()->json(['success' => false, 'message' => 'Symptom not found'], 404);
+        }
+
+        return response()->json(['success' => true, 'symptom' => $symptom, 'message' => 'Symptom found']);
     }
 
     /**
@@ -59,11 +65,12 @@ class SymptomController extends Controller
      */
     public function update(SymptomRequest $request, Symptom $symptom)
     {
-        if ($symptom->user() != Auth::user()) {
+        if ($symptom->user_id != Auth::id()) {
         return response()->json([
             'success' => false,
             'message' => 'You are not authorized to edit this symptom',
         ], 403);
+
         }
 
         $symptom->update($request->validated());
@@ -80,6 +87,19 @@ class SymptomController extends Controller
      */
     public function destroy(Symptom $symptom)
     {
-        //
+        if ($symptom->user_id != Auth::id()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'You are not authorized to delete this symptom',
+        ], 403);
+
+        }
+
+        $symptom->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Symptom deleted successfully',
+        ]);
     }
 }
