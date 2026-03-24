@@ -5,9 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\SymptomController;
 use App\Http\Controllers\DoctorController;
-
-
-
+use App\Http\Controllers\AppointmentController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -25,6 +23,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('/doctors', [DoctorController::class, 'index']);
     Route::get('/doctors/search', [DoctorController::class, 'search']);
     Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
+
+    Route::apiResource('appointments', AppointmentController::class);
 
 });
 

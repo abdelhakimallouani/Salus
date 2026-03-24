@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Appointment;
 
 class Doctor extends Model
 {
@@ -18,4 +19,8 @@ class Doctor extends Model
     protected $casts = [
         'available_days' => 'array',
     ];
+
+    public function appointments(){
+        return $this->hasMany(Appointment::class);
+    }
 }
