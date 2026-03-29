@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\SymptomController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\AIController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -25,7 +26,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
 
     Route::apiResource('appointments', AppointmentController::class);
-
+    Route::post('/ai/health-advice', [AIController::class, 'healthAdvice']);
+    
 });
 
 Route::get('/user', function (Request $request) {
